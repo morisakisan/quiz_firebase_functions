@@ -5,6 +5,9 @@ inputs:
   project_id:
     description: 'project_id'
     required: true
+  firebase_token:
+    description: 'Firebase token for deployment'
+    required: true
 
 runs:
   using: "composite"
@@ -19,5 +22,5 @@ runs:
       shell: bash
 
     - name: Deploy to Firebase
-      run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }} --project ${{ inputs.project_id }}
+      run: firebase deploy --token ${{ inputs.firebase_token }} --project ${{ inputs.project_id }}
       shell: bash

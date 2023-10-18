@@ -13,8 +13,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: deploy
         uses: ./.github/actions/deploy
         with:
           project_id: quizsharerelease
+          firebase_token: ${{ secrets.FIREBASE_TOKEN }}
