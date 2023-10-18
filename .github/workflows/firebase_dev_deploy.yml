@@ -20,3 +20,4 @@ jobs:
         with:
           project_id: quzishare
           firebase_token: ${{ secrets.FIREBASE_TOKEN }}
+          firebase_json: ${{ secrets.DEV_FIREBASE_JSON }}

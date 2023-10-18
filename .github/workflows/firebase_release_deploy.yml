@@ -19,3 +19,4 @@ jobs:
         with:
           project_id: quizsharerelease
           firebase_token: ${{ secrets.FIREBASE_TOKEN }}
+          firebase_json: ${{ secrets.RELEASE_FIREBASE_JSON }}
