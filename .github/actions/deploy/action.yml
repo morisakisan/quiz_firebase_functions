@@ -22,6 +22,7 @@ runs:
     
     - name: Create JSON file from secret
       run: echo "${{ inputs.firebase_json }}" > firebase.json
+      shell: bash
 
     - name: Install Firebase CLI
       run: npm install -g firebase-tools
