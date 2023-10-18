@@ -21,7 +21,7 @@ runs:
         node-version: '16'
     
     - name: Create JSON file from secret
-      run: echo "${{ inputs.firebase_json }}" > firebase.json
+      run: echo "${{ inputs.firebase_json }}" | base64 -d > firebase.json
       shell: bash
 
     - name: Install Firebase CLI
