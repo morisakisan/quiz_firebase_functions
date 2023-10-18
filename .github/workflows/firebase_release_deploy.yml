@@ -1,6 +1,7 @@
 name: Deploy to Release Firebase
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
