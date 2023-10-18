@@ -1,4 +1,4 @@
-name: Deploy to Firebase
+name: Deploy to Dev Firebase
 
 on:
   workflow_dispatch:
