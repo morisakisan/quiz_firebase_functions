@@ -1,0 +1,17 @@
+name: Deploy to Firebase
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: deploy
+        uses: ./.github/actions/deploy
+        with:
+          project_id: quizsharerelease
