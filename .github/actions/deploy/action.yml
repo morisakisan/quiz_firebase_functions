@@ -27,6 +27,13 @@ runs:
     - name: Install Firebase CLI
       run: npm install -g firebase-tools
       shell: bash
+    
+    - name: Install Functions dependencies
+      run: |
+        cd functions
+        npm install
+        cd ..
+      shell: bash
 
     - name: Deploy to Firebase
       run: firebase deploy --token ${{ inputs.firebase_token }} --project ${{ inputs.project_id }}
