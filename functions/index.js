@@ -10,11 +10,9 @@ exports.deleteUserAccount = functions.https.onCall(async (data, context) => {
     const collections = await db.listCollections();
     const promises = [];
 
-    for (const collection of collections) {
-        const userDocs = await collection.where('uid', '==', userId).get();
-        userDocs.forEach(doc => {
-            promises.push(doc.ref.delete());
-        });
+    const topLevelCollections = await db.listCollections();
+    for (const collection of topLevelCollections) {
+        promises.push(deleteDocumentsWithUserId(collection, userId, promises));
     }
 
     // Storageからのデータ削除
@@ -30,3 +28,16 @@ exports.deleteUserAccount = functions.https.onCall(async (data, context) => {
 
     return { success: true };
 });
+
+async function deleteDocumentsWithUserId(collectionRef, userId, promises) {
+    const userDocs = await collectionRef.where('uid', '==', userId).get();
+
+    for (const doc of userDocs.docs) {
+        promises.push(doc.ref.delete());
+
+        const subCollections = await doc.ref.listCollections();
+        for (const subCollection of subCollections) {
+            promises.push(deleteDocumentsWithUserId(subCollection, userId, promises));
+        }
+    }
+}
