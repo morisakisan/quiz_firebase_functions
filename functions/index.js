@@ -18,7 +18,7 @@ exports.deleteUserAccount = functions.https.onCall(async (data, context) => {
 
     // Storageからのデータ削除
     const storageBucket = admin.storage().bucket();
-    const userDirectory = `path/to/user/directory/${userId}/`;
+    const userDirectory = `${userId}/`;
     promises.push(storageBucket.deleteFiles({ prefix: userDirectory }));
 
     // Promiseの実行
