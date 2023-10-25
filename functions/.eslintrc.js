@@ -5,8 +5,8 @@ module.exports = {
     node: true,
   },
   parserOptions: {
-		"ecmaVersion": 13
-	},
+    "ecmaVersion": 13,
+  },
   extends: [
     "eslint:recommended",
     "google",
