@@ -12,12 +12,13 @@ exports.deleteUserAccount = functions.https.onCall(async (data, context) => {
 
     const topLevelCollections = await db.listCollections();
     for (const collection of topLevelCollections) {
-        promises.push(deleteDocumentsWithUserId(collection, userId, promises));
+        const promise = await deleteDocumentsWithUserId(collection, userId, promises);
+        promises.push(promise);
     }
 
     // Storageからのデータ削除
     const storageBucket = admin.storage().bucket();
-    const userDirectory = `path/to/user/directory/${userId}/`;
+    const userDirectory = `${userId}/`;
     promises.push(storageBucket.deleteFiles({ prefix: userDirectory }));
 
     // Promiseの実行
@@ -29,15 +30,21 @@ exports.deleteUserAccount = functions.https.onCall(async (data, context) => {
     return { success: true };
 });
 
-async function deleteDocumentsWithUserId(collectionRef, userId, promises) {
+async function deleteDocumentsWithUserId(collectionRef, userId) {
     const userDocs = await collectionRef.where('uid', '==', userId).get();
+    const promises = [];
 
     for (const doc of userDocs.docs) {
-        promises.push(doc.ref.delete());
-
         const subCollections = await doc.ref.listCollections();
         for (const subCollection of subCollections) {
-            promises.push(deleteDocumentsWithUserId(subCollection, userId, promises));
+            const allDocsInSubCollection = await subCollection.get();
+            for (const subDoc of allDocsInSubCollection.docs) {
+                promises.push(subDoc.ref.delete());
+            }
+            promises.push(deleteDocumentsWithUserId(subCollection, userId)); // サブコレクションのサブコレクションを再帰的に処理
         }
+        promises.push(doc.ref.delete()); // 親ドキュメントを削除
     }
+
+    return Promise.all(promises);
 }
