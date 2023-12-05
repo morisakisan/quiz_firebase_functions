@@ -8,9 +8,6 @@ inputs:
   firebase_token:
     description: 'Firebase token for deployment'
     required: true
-  firebase_json:
-    description: 'Firebase json'
-    required: true
 
 runs:
   using: "composite"
@@ -19,10 +16,6 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version: '16'
-    
-    - name: Create JSON file from secret
-      run: echo "${{ inputs.firebase_json }}" | base64 -d > firebase.json
-      shell: bash
 
     - name: Install Firebase CLI
       run: npm install -g firebase-tools
