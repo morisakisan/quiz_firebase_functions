@@ -1,0 +1,22 @@
+name: Deploy to Release Firebase
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: deploy
+        uses: ./.github/actions/deploy
+        with:
+          project_id: quizsharerelease
+          firebase_token: ${{ secrets.FIREBASE_TOKEN }}
